@@ -162,7 +162,11 @@ HeaderSection::HeaderSection() : SynthSection("header_section"), tab_offset_(0) 
   tab_selector_->setSliderStyle(Slider::LinearBar);
   tab_selector_->setRange(0, 3);
   tab_selector_->addListener(this);
+#if defined(VIAL_FX)
+  tab_selector_->setNames({"Input", "EFFECTS", "MATRIX", "ADVANCED"});
+#else
   tab_selector_->setNames({"VOICE", "EFFECTS", "MATRIX", "ADVANCED"});
+#endif
   tab_selector_->setScrollWheelEnabled(false);
 
   synth_preset_selector_ = std::make_unique<SynthPresetSelector>();

@@ -38,6 +38,7 @@ class DeleteSection;
 class ExpiredSection;
 class ExtraModSection;
 class HeaderSection;
+class InputSection;
 class KeyboardInterface;
 class MasterControlsInterface;
 class ModulationInterface;
@@ -180,6 +181,7 @@ class FullInterface : public SynthSection, public AuthenticationSection::Listene
     std::unique_ptr<Component> standalone_settings_section_;
 
     std::unique_ptr<HeaderSection> header_;
+    std::unique_ptr<InputSection> input_section_;
     std::unique_ptr<SynthesisInterface> synthesis_interface_;
     std::unique_ptr<MasterControlsInterface> master_controls_interface_;
     std::unique_ptr<ModulationInterface> modulation_interface_;

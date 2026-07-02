@@ -15,6 +15,7 @@
  */
 
 #include "voice_section.cpp"
+#include "input_section.cpp"
 #include "oscillator_advanced_section.cpp"
 #include "about_section.cpp"
 #include "authentication_section.cpp"

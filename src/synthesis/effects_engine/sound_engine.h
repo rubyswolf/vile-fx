@@ -102,6 +102,10 @@ namespace vital {
       EffectsModulationHandler* modulation_handler_;
       Upsampler* upsampler_;
       ReorderableEffectChain* effect_chain_;
+      Output* input_1_source_;
+      Output* input_1_pan_;
+      Output* input_1_width_;
+      Output* input_1_level_;
 
       int last_oversampling_amount_;
       int last_sample_rate_;
@@ -109,6 +113,7 @@ namespace vital {
       Value* bps_;
       Value* legato_;
       PeakMeter* peak_meter_;
+      poly_float input_buffer_[kMaxBufferSize];
 
       CircularQueue<Processor*> modulation_processors_;
 

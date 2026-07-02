@@ -26,9 +26,16 @@
 #include "peak_meter.h"
 #include "operators.h"
 #include "reorderable_effect_chain.h"
+#include "utils.h"
 #include "value_switch.h"
 
 namespace vital {
+  namespace {
+    constexpr mono_float kInputAngleScale = kPi * 0.25f;
+    constexpr mono_float kInputLevelMinDb = -80.0f;
+    constexpr mono_float kInputLevelMaxDb = 24.0f;
+    constexpr mono_float kInvSqrt2 = 1.0f / kSqrt2;
+  }
 
   SoundEngine::SoundEngine() : SynthModule(0, 1), modulation_handler_(nullptr), 
                                last_oversampling_amount_(-1), last_sample_rate_(-1), peak_meter_(nullptr) {
@@ -68,6 +75,11 @@ namespace vital {
 
     createBaseControl("pitch_wheel");
     createBaseControl("mod_wheel");
+
+    input_1_source_ = createMonoModControl("input_1_source", true, true);
+    input_1_pan_ = createMonoModControl("input_1_pan", true, true);
+    input_1_width_ = createMonoModControl("input_1_width", true, true);
+    input_1_level_ = createMonoModControl("input_1_level", true, true);
 
     upsampler_ = new Upsampler();
     addIdleProcessor(upsampler_);
@@ -236,7 +248,34 @@ namespace vital {
     FloatVectorOperations::disableDenormalisedNumberSupport();
     modulation_handler_->setLegato(legato_->value());
 
-    upsampler_->processWithInput(audio_in, num_samples);
+    for (int i = 0; i < num_samples; ++i) {
+      mono_float source = utils::clamp(input_1_source_->buffer[i][0], -1.0f, 1.0f);
+      mono_float pan = utils::clamp(input_1_pan_->buffer[i][0], -1.0f, 1.0f);
+      mono_float width = utils::clamp(input_1_width_->buffer[i][0], -1.0f, 1.0f);
+      mono_float level_db = utils::clamp(input_1_level_->buffer[i][0], kInputLevelMinDb, kInputLevelMaxDb);
+      mono_float gain = level_db <= kInputLevelMinDb ? 0.0f : utils::dbToMagnitude(level_db);
+
+      mono_float theta_source = kInputAngleScale * source;
+      mono_float theta_pan = kInputAngleScale * pan;
+      mono_float cos_source = std::cos(theta_source);
+      mono_float sin_source = std::sin(theta_source);
+      mono_float cos_pan = std::cos(theta_pan);
+      mono_float sin_pan = std::sin(theta_pan);
+
+      mono_float left = audio_in[i][0];
+      mono_float right = audio_in[i][1];
+      mono_float mid = (left + right) * kInvSqrt2;
+      mono_float side = (left - right) * kInvSqrt2;
+
+      mono_float out_mid = gain * (cos_pan * cos_source * mid + cos_pan * sin_source * side);
+      mono_float out_side = gain * (sin_pan * cos_source * mid + (sin_pan * sin_source + width) * side);
+
+      mono_float output_left = (out_mid + out_side) * kInvSqrt2;
+      mono_float output_right = (out_mid - out_side) * kInvSqrt2;
+      input_buffer_[i] = poly_float(output_left, output_right);
+    }
+
+    upsampler_->processWithInput(input_buffer_, num_samples);
     ProcessorRouter::process(num_samples);
 
     for (auto& status_source : data_->status_outputs)
