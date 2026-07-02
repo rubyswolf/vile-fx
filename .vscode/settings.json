@@ -1,0 +1,26 @@
+{
+    "files.associations": {
+        "*.pd_lua": "lua",
+        "*.mm": "cpp",
+        "algorithm": "cpp",
+        "format": "cpp",
+        "random": "cpp",
+        "xlocale": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp",
+        "vector": "cpp",
+        "charconv": "cpp",
+        "codecvt": "cpp",
+        "deque": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "istream": "cpp",
+        "iterator": "cpp",
+        "list": "cpp",
+        "sstream": "cpp",
+        "xlocbuf": "cpp",
+        "xlocmon": "cpp",
+        "xlocnum": "cpp",
+        "*.rh": "cpp"
+    }
+}
