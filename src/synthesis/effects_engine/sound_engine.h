@@ -44,6 +44,7 @@ namespace vital {
       virtual ~SoundEngine();
 
       void init() override;
+      void process(int num_samples) override;
       void processWithInput(const poly_float* audio_in, int num_samples) override;
       void correctToTime(double seconds) override;
 
@@ -114,4 +115,3 @@ namespace vital {
       JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SoundEngine)
   };
 } // namespace vital
-

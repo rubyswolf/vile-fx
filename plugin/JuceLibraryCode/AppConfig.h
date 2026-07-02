@@ -24,6 +24,60 @@
  #define _ENABLE_EXTENDED_ALIGNED_STORAGE
 #endif
 
+#ifdef VIAL_FX
+ #ifndef JucePlugin_Name
+  #define JucePlugin_Name "Vial FX"
+ #endif
+ #ifndef JucePlugin_Manufacturer
+  #define JucePlugin_Manufacturer "Vial Audio"
+ #endif
+ #ifndef JucePlugin_Desc
+  #define JucePlugin_Desc "Vial effects plugin"
+ #endif
+ #ifndef JucePlugin_PluginCode
+  #define JucePlugin_PluginCode 0x56694678
+ #endif
+ #ifndef JucePlugin_IsSynth
+  #define JucePlugin_IsSynth 0
+ #endif
+ #ifndef JucePlugin_WantsMidiInput
+  #define JucePlugin_WantsMidiInput 1
+ #endif
+ #ifndef JucePlugin_ProducesMidiOutput
+  #define JucePlugin_ProducesMidiOutput 0
+ #endif
+ #ifndef JucePlugin_VSTCategory
+  #define JucePlugin_VSTCategory kPlugCategEffect
+ #endif
+ #ifndef JucePlugin_Vst3Category
+  #define JucePlugin_Vst3Category "Fx"
+ #endif
+ #ifndef JucePlugin_AUMainType
+  #define JucePlugin_AUMainType 'aufx'
+ #endif
+ #ifndef JucePlugin_AUExportPrefix
+  #define JucePlugin_AUExportPrefix vialfx
+ #endif
+ #ifndef JucePlugin_AUExportPrefixQuoted
+  #define JucePlugin_AUExportPrefixQuoted "vialfx"
+ #endif
+ #ifndef JucePlugin_CFBundleIdentifier
+  #define JucePlugin_CFBundleIdentifier audio.vial.fx
+ #endif
+ #ifndef JucePlugin_AAXIdentifier
+  #define JucePlugin_AAXIdentifier audio.vial.fx
+ #endif
+ #ifndef JucePlugin_MaxNumInputChannels
+  #define JucePlugin_MaxNumInputChannels 2
+ #endif
+ #ifndef JucePlugin_MaxNumOutputChannels
+  #define JucePlugin_MaxNumOutputChannels 2
+ #endif
+ #ifndef JucePlugin_PreferredChannelConfigurations
+  #define JucePlugin_PreferredChannelConfigurations {2, 2}
+ #endif
+#endif
+
 #ifdef INTEL_IPP
  #undef INTEL_IPP
 #endif

@@ -90,6 +90,8 @@ FullInterface::FullInterface(SynthGuiData* synth_data) : SynthSection("full_inte
   header_ = std::make_unique<HeaderSection>();
   addSubSection(header_.get());
   header_->addListener(this);
+  if (!synth)
+    header_->setActiveTab(1);
 
   modulation_interface_ = std::make_unique<ModulationInterface>(synth_data);
   addSubSection(modulation_interface_.get());
@@ -226,6 +228,8 @@ FullInterface::FullInterface(SynthGuiData* synth_data) : SynthSection("full_inte
   setAllValues(synth_data->controls);
   setOpaque(true);
   setSkinValues(default_skin, true);
+  if (!synth)
+    tabSelected(1);
 
   needs_download_ = UpdateMemory::getInstance()->incrementChecker();
 
@@ -680,7 +684,8 @@ void FullInterface::setPresetBrowserVisibility(bool visible, int current_tab) {
   modulation_interface_->setVisible(!visible);
   portamento_section_->setVisible(!visible);
   voice_section_->setVisible(!visible);
-  synthesis_interface_->setVisible(!visible);
+  if (synthesis_interface_)
+    synthesis_interface_->setVisible(!visible);
 
   if (visible) {
     tabSelected(-1);
@@ -701,7 +706,8 @@ void FullInterface::setBankExporterVisibility(bool visible, int current_tab) {
   modulation_interface_->setVisible(!visible);
   portamento_section_->setVisible(!visible);
   voice_section_->setVisible(!visible);
-  synthesis_interface_->setVisible(!visible);
+  if (synthesis_interface_)
+    synthesis_interface_->setVisible(!visible);
 
   if (visible) {
     tabSelected(-1);
@@ -732,6 +738,8 @@ void FullInterface::setFocus() {
     authentication_->setFocus();
   else if (synthesis_interface_ && synthesis_interface_->isShowing())
     synthesis_interface_->setFocus();
+  else if (effects_interface_ && effects_interface_->isShowing())
+    effects_interface_->setFocus();
 }
 
 void FullInterface::notifyChange() {
@@ -763,7 +771,8 @@ void FullInterface::showFullScreenSection(SynthSection* full_screen) {
 
   bool show_rest = full_screen == nullptr;
   header_->setVisible(show_rest);
-  synthesis_interface_->setVisible(show_rest);
+  if (synthesis_interface_)
+    synthesis_interface_->setVisible(show_rest);
   modulation_interface_->setVisible(show_rest);
   keyboard_interface_->setVisible(show_rest);
   extra_mod_section_->setVisible(show_rest);
@@ -784,7 +793,8 @@ void FullInterface::showWavetableEditSection(int index) {
 
   bool show_rest = index < 0;
   header_->setVisible(show_rest);
-  synthesis_interface_->setVisible(show_rest);
+  if (synthesis_interface_)
+    synthesis_interface_->setVisible(show_rest);
   modulation_interface_->setVisible(show_rest);
   keyboard_interface_->setVisible(show_rest);
   extra_mod_section_->setVisible(show_rest);

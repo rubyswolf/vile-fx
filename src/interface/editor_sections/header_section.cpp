@@ -358,3 +358,7 @@ void HeaderSection::notifyFresh() {
   synth_preset_selector_->resetText();
   synth_preset_selector_->setModified(false);
 }
+
+void HeaderSection::setActiveTab(int index) {
+  tab_selector_->setValue(index, dontSendNotification);
+}

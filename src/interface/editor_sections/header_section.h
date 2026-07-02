@@ -96,6 +96,7 @@ class HeaderSection : public SynthSection, public SaveSection::Listener,
 
     void notifyChange();
     void notifyFresh();
+    void setActiveTab(int index);
   
     void setSaveSection(SaveSection* save_section) { 
       synth_preset_selector_->setSaveSection(save_section);
@@ -124,4 +125,3 @@ class HeaderSection : public SynthSection, public SaveSection::Listener,
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeaderSection)
 };
-

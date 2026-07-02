@@ -66,10 +66,8 @@ namespace vital {
 
     addProcessor(modulation_handler_);
 
-    Value* pitch_wheel = createBaseControl("pitch_wheel");
-    modulation_handler_->setPitchWheelControl(pitch_wheel);
-    Value* mod_wheel = createBaseControl("mod_wheel");
-    modulation_handler_->setModWheelControl(mod_wheel);
+    createBaseControl("pitch_wheel");
+    createBaseControl("mod_wheel");
 
     upsampler_ = new Upsampler();
     addIdleProcessor(upsampler_);
@@ -225,6 +223,11 @@ namespace vital {
     upsampler_->setOversampleAmount(oversample);
     modulation_handler_->setOversampleAmount(oversample);
     effect_chain_->setOversampleAmount(oversample);
+  }
+
+  void SoundEngine::process(int num_samples) {
+    static const poly_float kSilentInput[kMaxBufferSize] = { };
+    processWithInput(kSilentInput, num_samples);
   }
 
   void SoundEngine::processWithInput(const poly_float* audio_in, int num_samples) {
